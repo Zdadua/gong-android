@@ -2,10 +2,10 @@ package com.sky31.gonggong.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class CoursesData(
-    val courses: List<CourseData>
+data class CourseData(
+    val courses: List<CourseElem>
 ) {
-    data class CourseData(
+    data class CourseElem(
         val name: String,
         val teacher: String,
         val classroom: String,
