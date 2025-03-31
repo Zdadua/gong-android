@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.sky31.gonggong.dao.UserDao
-import com.sky31.gonggong.entity.UserEntity
+import com.sky31.gonggong.database.typeconverter.Converters
+import com.sky31.gonggong.entity.database.UserEntity
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -14,6 +16,7 @@ import kotlinx.coroutines.sync.withLock
     version = 1,
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao
 
