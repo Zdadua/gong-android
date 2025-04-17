@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--  特例配置，配置某个域名是否开启Http流量允许-->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">gong.leocoding.online</domain>
+    </domain-config>
+</network-security-config>
