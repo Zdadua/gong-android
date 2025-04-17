@@ -33,14 +33,36 @@ class DealLoginService(service: LoginService, dao: UserDao) {
                     .client(client)
                     .build()
 
-                return result
             }
             is ResultWrapper.Error -> {
-                return result
+                println(result.toString())
             }
             is ResultWrapper.NetworkError -> {
-                return result
+                println(result.toString())
             }
         }
+
+        return result
+    }
+
+    suspend fun logout(): Boolean {
+        val result = userDao.deleteUser() > 0
+        if(!result) return false
+
+        val client: OkHttpClient = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val originRequest = chain.request()
+                val newRequest = originRequest.newBuilder()
+                    .removeHeader("Authorization")
+                    .build()
+
+                chain.proceed(newRequest)
+            }.build()
+
+        MainApplication.retrofit = MainApplication.retrofit.newBuilder()
+            .client(client)
+            .build()
+
+        return true
     }
 }

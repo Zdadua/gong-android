@@ -1,6 +1,14 @@
-package com.sky31.gonggong.ui.screens
+package com.sky31.gonggong.ui.screens.loginScreen
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -19,12 +27,16 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -36,28 +48,107 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.sky31.gonggong.R
-import com.sky31.gonggong.instance.RequestServiceInstance
 import com.sky31.gonggong.ui.theme.Gray01
 import com.sky31.gonggong.ui.theme.Pink01
+import com.sky31.gonggong.viewmodel.AuthState
+import com.sky31.gonggong.viewmodel.AuthViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    authViewModel: AuthViewModel
 ) {
+    val scope = rememberCoroutineScope()
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var clickable by remember { mutableStateOf<LoginButtonState>(LoginButtonState.Clickable) }
+    var alertVisible by remember { mutableStateOf(false) }
+    var alertText by remember { mutableStateOf("") }
+
+    val animatedColor by animateColorAsState(
+        targetValue = if(clickable == LoginButtonState.Clickable) Pink01 else Gray01,
+        animationSpec = tween(200),
+        label = "color")
+
+    val authState by authViewModel.authState.collectAsState()
 
     val passwordVisible = remember { mutableStateOf(false) }
     val passwordIconId = remember(passwordVisible.value) {
         if (passwordVisible.value) R.drawable.password_visible else R.drawable.password_invisible
     }
 
+    LaunchedEffect(authState) {
+        when(authState) {
+            is AuthState.Authenticated -> {
+                navController.navigate("main")
+            }
+            is AuthState.Loading -> {
+
+            }
+            is AuthState.Error -> {
+                alertText = (authState as AuthState.Error).message
+                alertVisible = true
+                delay(1500)
+                alertVisible = false
+                authViewModel.resetAuthState()
+            }
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(username, password) {
+        clickable = if(username == "" || password == "") {
+            LoginButtonState.UnClickable
+        } else {
+            LoginButtonState.Clickable
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 150.dp)
+            .padding(top = 50.dp)
     ) {
+        Box(
+            modifier = Modifier
+                .height(40.dp)
+                .fillMaxWidth()
+        ) {
+            this@Column.AnimatedVisibility(
+                visible = alertVisible,
+                enter = fadeIn() + slideInVertically(),
+                exit = fadeOut() + slideOutVertically(),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .height(30.dp)
+                            .clip(RoundedCornerShape(15.dp))
+                            .background(Pink01)
+                            .padding(top = 6.dp, bottom = 6.dp, start = 25.dp, end = 25.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "is $alertText",
+                            color = Color.White
+                            )
+                    }
+                }
+            }
+        }
+
+        Spacer(
+            modifier = Modifier
+                .height(40.dp)
+        )
+
         Image(
             painter = painterResource(id = R.drawable.login_logo),
             modifier = Modifier
@@ -176,14 +267,25 @@ fun LoginScreen(
                 .width(170.dp)
                 .align(Alignment.CenterHorizontally),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Pink01,
+                containerColor = animatedColor,
                 contentColor = Color.White
             ),
             onClick = {
+                if(clickable == LoginButtonState.Clickable) {
+                    scope.launch {
+                        authViewModel.login(username, password)
+                    }
+                }
             }
         ) {
             Text(text = "登录")
         }
 
     }
+}
+
+sealed class LoginButtonState {
+    data object Clickable: LoginButtonState()
+    data object UnClickable: LoginButtonState()
+    data object Loading: LoginButtonState()
 }

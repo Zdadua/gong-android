@@ -9,13 +9,15 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.sky31.gonggong.ui.screens.LoginScreen
-import com.sky31.gonggong.ui.screens.MainScreen
+import com.sky31.gonggong.ui.screens.loginScreen.LoginScreen
+import com.sky31.gonggong.ui.screens.mainScreen.MainScreen
+import com.sky31.gonggong.viewmodel.AuthViewModel
 
 @Composable
 fun App() {
 
     val navController = rememberNavController()
+    val authViewModel = AuthViewModel()
 
     Box(
         modifier = Modifier
@@ -26,10 +28,10 @@ fun App() {
             startDestination = "login"
         ) {
             composable("login") {
-                LoginScreen(navController)
+                LoginScreen(navController, authViewModel)
             }
             composable("main") {
-                MainScreen()
+                MainScreen(navController, authViewModel)
             }
         }
     }
