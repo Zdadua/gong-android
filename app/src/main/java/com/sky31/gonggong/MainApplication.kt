@@ -21,7 +21,7 @@ class MainApplication: Application() {
         ).build()
 
         retrofit = Retrofit.Builder()
-        .baseUrl(GlobalConfig.hostConfig)
+        .baseUrl(GlobalConfig.HOST_CONFIG)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
