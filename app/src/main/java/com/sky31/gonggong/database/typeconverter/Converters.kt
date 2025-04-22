@@ -84,4 +84,14 @@ class Converters {
     fun toClassroomData(value: String?): ClassroomData? {
         return Gson().fromJson(value, ClassroomData::class.java)
     }
+
+    @TypeConverter
+    fun fromCourseMap(value: Map<String, List<CourseData.CourseElem>>?): String? {
+        return Gson().toJson(value)
+    }
+
+    @TypeConverter
+    fun toCourseMap(value: String?): Map<String, List<CourseData.CourseElem>>? {
+        return Gson().fromJson(value, object : TypeToken<Map<String, List<CourseData.CourseElem>>>() {}.type)
+    }
 }
