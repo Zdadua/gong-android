@@ -3,5 +3,6 @@
     <!--  特例配置，配置某个域名是否开启Http流量允许-->
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">gong.leocoding.online</domain>
+        <domain includeSubdomains="true">localhost</domain>
     </domain-config>
 </network-security-config>
