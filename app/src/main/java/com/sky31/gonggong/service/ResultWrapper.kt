@@ -7,7 +7,7 @@ import java.io.IOException
 sealed class ResultWrapper<out T> {
     data class Success<out T>(val data: T, val code: Int, val message: String) : ResultWrapper<T>()
     data class Error(val code: Int, val message: String) : ResultWrapper<Nothing>()
-    data object NetworkError : ResultWrapper<Nothing>()
+    data class NetworkError(val message: String) : ResultWrapper<Nothing>()
 }
 
 suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>): ResultWrapper<T?> {
@@ -23,7 +23,7 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>): ResultWrapper<T
     } catch (e: HttpException) {
         ResultWrapper.Error(e.code(), e.message() ?: "Unknown error")
     } catch (e: IOException) {
-        ResultWrapper.NetworkError
+        ResultWrapper.NetworkError(e.message ?: "Unknown error")
     } catch (e: Exception) {
         ResultWrapper.Error(500, e.message ?: "Unknown error")
     }
