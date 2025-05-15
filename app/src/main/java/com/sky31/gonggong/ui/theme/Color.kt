@@ -1,14 +1,41 @@
 package com.sky31.gonggong.ui.theme
 
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+/**
+ * 主题色
+ */
+val Orange01 = Color(0xFFF8931D)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+/**
+ * 系统主题色
+ */
+interface ThemeColor {
+    val backgroundColor: Color
+    val textPrimary: Color
+    val textSecondary: Color
+    val boxColorPrimary: Color
+    val boxColorSecondary: Color
+    val drawerColor: Color
+}
 
-val Pink01 = Color(0xFFFF6275)
-val Gray01 = Color(0xFF7A7A7A)
+object DarkColor: ThemeColor {
+    override val backgroundColor: Color = Color(0xFF1C1C1C)
+    override val textPrimary: Color = Color.White
+    override val textSecondary: Color = Color(0xFFB9B9B9)
+    override val boxColorPrimary: Color = Color(0xFF313131)
+    override val boxColorSecondary: Color = Color(0xFF1C1C1C)
+    override val drawerColor: Color = Color(0xFF494949)
+}
+
+object LightColor: ThemeColor {
+    override val backgroundColor: Color = Color(0xFFFFFFFF)
+    override val textPrimary: Color = Color.Black
+    override val textSecondary: Color = Color(0xFF515151)
+    override val boxColorPrimary: Color = Color(0xFFECECEC)
+    override val boxColorSecondary: Color = Color(0xFFFFFFFF)
+    override val drawerColor: Color = Color(0xFFE5F3E3)
+}
+
+val LocalThemeColor = compositionLocalOf<ThemeColor> { DarkColor }
