@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.sky31.gonggong.entity.CalendarData
 import com.sky31.gonggong.entity.database.CourseEntity
+import com.sky31.gonggong.entity.database.PublicEntity
 
 @Dao
 interface CourseDao {
@@ -17,6 +18,9 @@ interface CourseDao {
 
     @Query("SELECT calendar FROM public_data")
     suspend fun getCalendar(): CalendarData?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPublicData(data: PublicEntity)
 
     @Query("UPDATE public_data SET calendar = :calendar")
     suspend fun updateCalendar(calendar: CalendarData)
