@@ -43,19 +43,7 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromCourseList(value: List<CourseData.CourseElem>): String? {
-        return Gson().toJson(value)
-    }
-
-    @TypeConverter
-    fun toCourseList(value: String?): List<CourseData.CourseElem>? {
-        val type = object : TypeToken<List<CourseData.CourseElem>>() {}.type
-        return Gson().fromJson(value, type)
-    }
-
-    @TypeConverter
     fun fromExamList(value: List<ExamData.ExamElem>): String? {
-
         return Gson().toJson(value)
     }
 
