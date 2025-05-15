@@ -1,14 +1,17 @@
 package com.sky31.gonggong.ui.theme
 
+/**
+ * courseScreen课程容器颜色
+ */
 enum class CourseColor(val rgb: Long) {
-    Green01(0x8ACD00),
-    Green02(0x00ff80),
-    Orange01(0xFF7700),
-    Orange02(0xff4000),
-    Blue01(0x0077ff),
-    Blue02(0x8400ff),
-    Red01(0xff0055),
-    Red02(0xff0000),
-    Red03(0x912c00),
-    Black(0x000000),
+    Green01(0xFFFFA040),
+    Green02(0xFFFF714D),
+    Orange01(0xFFFF7700),
+    Orange02(0xFFff4000),
+    Blue01(0xFF55E6FF),
+    Blue02(0xFF88BCFF),
+    Purple01(0xFFF3A6FF),
+    Pink(0xFFFFBDBD),
+    Purple02(0xFFCFB6FE),
+    Yellow(0xFFFFE188),
 }
