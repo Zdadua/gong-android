@@ -48,8 +48,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.sky31.gonggong.R
-import com.sky31.gonggong.ui.theme.Gray01
-import com.sky31.gonggong.ui.theme.Pink01
+import com.sky31.gonggong.ui.theme.LocalThemeColor
+import com.sky31.gonggong.ui.theme.Orange01
 import com.sky31.gonggong.viewmodel.AuthState
 import com.sky31.gonggong.viewmodel.AuthViewModel
 import kotlinx.coroutines.delay
@@ -69,7 +69,7 @@ fun LoginScreen(
     var alertText by remember { mutableStateOf("") }
 
     val animatedColor by animateColorAsState(
-        targetValue = if(clickable == LoginButtonState.Clickable) Pink01 else Gray01,
+        targetValue = if (clickable == LoginButtonState.Clickable) Orange01 else LocalThemeColor.current.boxColorPrimary,
         animationSpec = tween(200),
         label = "color")
 
@@ -131,7 +131,7 @@ fun LoginScreen(
                         modifier = Modifier
                             .height(30.dp)
                             .clip(RoundedCornerShape(15.dp))
-                            .background(Pink01)
+                            .background(Orange01)
                             .padding(top = 6.dp, bottom = 6.dp, start = 25.dp, end = 25.dp),
                         contentAlignment = Alignment.Center
                     ) {
@@ -185,9 +185,9 @@ fun LoginScreen(
                 ),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 decorationBox = { innerTextField ->
-                    Box() {
+                    Box {
                         if (username.isEmpty()) {
-                            Text("用户名", color = Gray01)
+                            Text("用户名", color = LocalThemeColor.current.textSecondary)
                         }
                         innerTextField()
                     }
@@ -231,9 +231,9 @@ fun LoginScreen(
                     keyboardType = KeyboardType.Password
                 ),
                 decorationBox = { innerTextField ->
-                    Box() {
+                    Box {
                         if (password.isEmpty()) {
-                            Text("密码", color = Gray01)
+                            Text("密码", color = LocalThemeColor.current.textSecondary)
                         }
                         innerTextField()
                     }
@@ -284,6 +284,9 @@ fun LoginScreen(
     }
 }
 
+/**
+ * 登录按钮状态
+ */
 sealed class LoginButtonState {
     data object Clickable: LoginButtonState()
     data object UnClickable: LoginButtonState()
