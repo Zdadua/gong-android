@@ -6,6 +6,6 @@ import com.sky31.gonggong.entity.ExamData
 
 @Entity(tableName = "exam_data")
 data class ExamEntity(
-    @PrimaryKey val uid: String,
-    val exams: List<ExamData.ExamElem>
+    @PrimaryKey val id: Int = 1,
+    val exams: List<ExamData.ExamElem>?
 )
