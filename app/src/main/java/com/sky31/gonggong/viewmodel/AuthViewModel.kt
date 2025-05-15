@@ -10,7 +10,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.runBlocking
+import okhttp3.OkHttpClient
 
+/**
+ * 认证ViewModel
+ */
 class AuthViewModel: ViewModel() {
 
     private val userDao by lazy { MainApplication.appDatabase.getUserDao() }
@@ -19,6 +23,7 @@ class AuthViewModel: ViewModel() {
         DealLoginService(service, userDao)
     }
 
+    // 用户登录状态
     private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
     val authState: StateFlow<AuthState> = _authState.asStateFlow()
 
@@ -40,6 +45,9 @@ class AuthViewModel: ViewModel() {
         }
     }
 
+    /**
+     * 重置认证状态
+     */
     fun resetAuthState() {
         _authState.value = AuthState.Unauthenticated
     }
@@ -51,9 +59,28 @@ class AuthViewModel: ViewModel() {
         val user = userDao.getUser()
         if (user != null) {
             user.token?.let { _authState.value = AuthState.Authenticated(it) }
+
+            val client: OkHttpClient = OkHttpClient.Builder()
+                .addInterceptor { chain ->
+                    val originRequest = chain.request()
+                    val newRequest = originRequest.newBuilder()
+                        .header("Authorization", "Bearer " + user.token)
+                        .build()
+
+                    chain.proceed(newRequest)
+                }.build()
+
+            MainApplication.retrofit = MainApplication.retrofit.newBuilder()
+                .client(client)
+                .build()
         }
     }
 
+    /**
+     * 用户登录
+     * @param username 用户名
+     * @param password 密码
+     */
     suspend fun login(username: String, password: String) {
         _authState.value = AuthState.Loading
 
@@ -73,6 +100,9 @@ class AuthViewModel: ViewModel() {
         }
     }
 
+    /**
+     * 用户登出
+     */
     suspend fun logout() {
         dealLoginService.logout()
         updateAuthStateFromDB()
