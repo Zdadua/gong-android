@@ -1,36 +1,27 @@
 package com.sky31.gonggong.service
 
-import androidx.compose.ui.graphics.Color
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import com.sky31.gonggong.dao.CourseDao
-import com.sky31.gonggong.entity.ApiResponse
 import com.sky31.gonggong.entity.CalendarData
 import com.sky31.gonggong.entity.CourseData
 import com.sky31.gonggong.entity.database.CourseEntity
-import com.sky31.gonggong.ui.theme.CourseColor
+import com.sky31.gonggong.entity.database.PublicEntity
+import com.sky31.gonggong.utils.TimeUtil.isInThisWeek
+import com.sky31.gonggong.utils.TimeUtil.weekdayNameMap
+import java.time.LocalDate
 
-fun generateCourseColor(courseName: String): Color {
-    val hash = courseName.hashCode()
-    val colors = CourseColor.entries.toTypedArray()
-
-    return Color(colors[hash % 10].rgb)
-}
-
-fun isInThisWeek(week: Int, course: CourseData.CourseElem): Boolean {
-    val weeks = course.weeks.split(",")
-
-    for(weekStr in weeks) {
-        if(weekStr.length == 1 && weekStr.toInt() == week)
-            return true
-
-        if(weekStr[0].code - 48 <= week && weekStr[2].code - 48 >= week)
-            return true
-    }
-
-    return false
-}
-
+/**
+ * 将courseList转为键为String(weekday)，值为List<CourseElem>的Map
+ */
+@RequiresApi(Build.VERSION_CODES.O)
 fun toCourseMap(courses: List<CourseData.CourseElem>): Map<String, List<CourseData.CourseElem>> {
     val map = mutableMapOf<String, List<CourseData.CourseElem>>()
+
+    weekdayNameMap.forEach { (_, s) ->
+        map[s] = listOf()
+    }
 
     for(course in courses) {
         val key = course.day
@@ -45,13 +36,15 @@ class DealCourseService(service: CourseService, dao: CourseDao): DealRequestServ
     private val courseDao = dao
 
     /**
-     * 互殴课程表并存入数据库
+     * 获取课程表并存入数据库
      */
-    suspend fun getCourse(): Boolean {
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getCourses(): RequestResult {
         return getAndStore(
             apiCall = { apiService.getCourses() },
             storage = { data ->
-                courseDao.insertCourse(CourseEntity(1, data?.data?.let { toCourseMap(it.courses) }))
+                Log.d(TAG, "insert course")
+                courseDao.insertCourse(CourseEntity(courses = data?.data?.let { toCourseMap(it.courses) }))
             }
         )
     }
@@ -59,22 +52,54 @@ class DealCourseService(service: CourseService, dao: CourseDao): DealRequestServ
     /**
      * 获取课程表日历并存入数据库
      */
-    suspend fun getCalendar(): Boolean {
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getCalendar(): RequestResult {
         return getAndStore(
             apiCall = {apiService.getCalendar()},
             storage = { data ->
-                data?.data?.let { courseDao.updateCalendar(it) }
+                data?.data?.let {
+                    if(courseDao.getCalendar() == null) {
+                        Log.d(TAG, "insert public data")
+                        courseDao.insertPublicData(PublicEntity(1, null, null, it))
+                    }
+                    else {
+                        Log.d(TAG, "update calendar")
+                        courseDao.updateCalendar(it)
+                    }
+
+                }
             }
         )
     }
 
     /**
-     * 从数据库获取课程表
+     * 获取今天的课程表
      */
-    suspend fun getCourseFromDatabase(): Map<String, List<CourseData.CourseElem>>? {
-        val result = courseDao.getCourseData()
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getTodayCourseList(): List<CourseData.CourseElem> {
+        val result = mutableListOf<CourseData.CourseElem>()
 
-        return result?.courses
+        val calendar = courseDao.getCalendar() ?: return result
+        val courses = courseDao.getCourseData()?.courses ?: return result
+
+        val start = LocalDate.parse(calendar.start)
+        val dateTime = LocalDate.now()
+
+        val week = (dateTime.toEpochDay() - start.toEpochDay()) / 7 + 1
+
+        val courseList = courses[weekdayNameMap[dateTime.dayOfWeek.value]]
+        if (courseList != null) {
+            for(course in courseList) {
+                if(isInThisWeek(week, course))
+                    result.add(course)
+            }
+        }
+
+        return result
+    }
+
+    suspend fun getCourseMap(): Map<String, List<CourseData.CourseElem>>? {
+        return courseDao.getCourseData()?.courses
     }
 
     /**
