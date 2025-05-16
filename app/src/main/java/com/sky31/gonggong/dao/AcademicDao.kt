@@ -1,6 +1,8 @@
 package com.sky31.gonggong.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.sky31.gonggong.entity.RankData
 import com.sky31.gonggong.entity.ScoreData
@@ -11,11 +13,17 @@ interface AcademicDao {
     @Query("SELECT * from academic_data")
     suspend fun getAcademicData(): AcademicEntity?
 
-    @Query("INSERT INTO academic_data(uid) VALUES(:uid)")
-    suspend fun insertEmptyAcademicData(uid: String):Long
+    @Query("SELECT major_score from academic_data")
+    suspend fun getMajorScore(): ScoreData?
 
-    @Query("DELETE FROM academic_data WHERE uid = :uid")
-    suspend fun deleteAcademicDataByUid(uid: String): Int
+    @Query("SELECT compulsory_rank from academic_data")
+    suspend fun getCompulsoryRank(): RankData?
+
+    @Query("SELECT total_rank from academic_data")
+    suspend fun getTotalRank(): RankData?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAcademicData(data: AcademicEntity)
 
     @Query("UPDATE academic_data SET total_rank = :rank")
     suspend fun updateTotalRank(rank: RankData): Int

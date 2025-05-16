@@ -8,9 +8,9 @@ import com.sky31.gonggong.entity.ScoreData
 
 @Entity(tableName = "academic_data")
 data class AcademicEntity(
-    @PrimaryKey val uid: String,
+    @PrimaryKey val uid: Int = 1,
     @ColumnInfo(name = "total_rank") val totalRank: RankData?,
     @ColumnInfo(name = "compulsory_rank") val compulsoryRank: RankData?,
     @ColumnInfo(name = "major_score") val majorScore: ScoreData?,
-    @ColumnInfo(name = "minor_score") val minorScore: ScoreData?
+    @ColumnInfo(name = "minor_score") val minorScore: ScoreData?,
 )
