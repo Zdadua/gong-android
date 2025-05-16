@@ -18,6 +18,7 @@ interface ThemeColor {
     val boxColorPrimary: Color
     val boxColorSecondary: Color
     val drawerColor: Color
+    val borderColor: Color
 }
 
 object DarkColor: ThemeColor {
@@ -25,17 +26,19 @@ object DarkColor: ThemeColor {
     override val textPrimary: Color = Color.White
     override val textSecondary: Color = Color(0xFFB9B9B9)
     override val boxColorPrimary: Color = Color(0xFF313131)
-    override val boxColorSecondary: Color = Color(0xFF1C1C1C)
+    override val boxColorSecondary: Color = Color(0xFF000000)
     override val drawerColor: Color = Color(0xFF494949)
+    override val borderColor: Color = Color(0xFF696969)
 }
 
 object LightColor: ThemeColor {
-    override val backgroundColor: Color = Color(0xFFFFFFFF)
+    override val backgroundColor: Color = Color(0xFFECECEC)
     override val textPrimary: Color = Color.Black
     override val textSecondary: Color = Color(0xFF515151)
-    override val boxColorPrimary: Color = Color(0xFFECECEC)
-    override val boxColorSecondary: Color = Color(0xFFFFFFFF)
+    override val boxColorPrimary: Color = Color(0xFFFFFFFF)
+    override val boxColorSecondary: Color = Color(0xFFEAEAEA)
     override val drawerColor: Color = Color(0xFFE5F3E3)
+    override val borderColor: Color = Color(0xFF707070)
 }
 
 val LocalThemeColor = compositionLocalOf<ThemeColor> { DarkColor }

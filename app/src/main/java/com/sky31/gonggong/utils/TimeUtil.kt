@@ -78,6 +78,16 @@ object TimeUtil {
         7 to "星期日"
     )
 
+    val chineseNumberMap = mapOf(
+        1 to "一",
+        2 to "二",
+        3 to "三",
+        4 to "四",
+        5 to "五",
+        6 to "六",
+        7 to "七",
+    )
+
     private val courseColor = mapOf(
         CourseState.Before to Color(0xFF2FB8BE),
         CourseState.During to Color(0xFFF8931D),

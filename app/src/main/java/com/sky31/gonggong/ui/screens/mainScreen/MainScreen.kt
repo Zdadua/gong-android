@@ -206,9 +206,14 @@ fun MainScreen(navController: NavController, authViewModel: AuthViewModel) {
                                 .width(30.dp)
                                 .aspectRatio(1f),
                             onClick = { navController.navigate("courseScreen") }
-                        ) {
+                        ) { }
 
-                        }
+                        Button(
+                            modifier = Modifier
+                                .width(30.dp)
+                                .aspectRatio(1f),
+                            onClick = { navController.navigate("academicScreen") }
+                        ) { }
                     }
                 }
             }

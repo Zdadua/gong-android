@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.sky31.gonggong.ui.screens.courseScreen.CourseScreen
 import com.sky31.gonggong.ui.screens.loginScreen.LoginScreen
 import com.sky31.gonggong.ui.screens.mainScreen.MainScreen
+import com.sky31.gonggong.ui.screens.scoreScreen.AcademicScreen
 import com.sky31.gonggong.ui.theme.DarkColor
 import com.sky31.gonggong.ui.theme.LightColor
 import com.sky31.gonggong.ui.theme.LocalThemeColor
@@ -41,6 +42,9 @@ fun App() {
                 }
                 composable("courseScreen") {
                     CourseScreen(navController)
+                }
+                composable("academicScreen") {
+                    AcademicScreen(navController)
                 }
             }
         }
