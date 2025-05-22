@@ -25,4 +25,7 @@ interface PublicDao {
 
     @Query("SELECT * FROM public_data")
     suspend fun getPublicData(): PublicEntity?
+
+    @Query("DELETE FROM public_data")
+    suspend fun clearAll()
 }

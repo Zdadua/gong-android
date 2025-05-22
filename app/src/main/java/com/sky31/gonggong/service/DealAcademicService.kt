@@ -5,7 +5,7 @@ import com.sky31.gonggong.dao.AcademicDao
 import com.sky31.gonggong.entity.database.AcademicEntity
 
 class DealAcademicService(service: AcademicService, dao: AcademicDao) : DealRequestService() {
-    private val apiService = service
+    private var apiService = service
     private val academicDao = dao
 
     suspend fun getScores(): RequestResult {
@@ -81,6 +81,11 @@ class DealAcademicService(service: AcademicService, dao: AcademicDao) : DealRequ
                 }
             }
         )
+    }
+
+    fun setService(service: AcademicService) {
+        apiService = service
+        Log.i(TAG, "reset academicService")
     }
 
     suspend fun getMajorScoreFromDatabase() = academicDao.getMajorScore()

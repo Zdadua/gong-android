@@ -32,7 +32,7 @@ fun toCourseMap(courses: List<CourseData.CourseElem>): Map<String, List<CourseDa
 }
 
 class DealCourseService(service: CourseService, dao: CourseDao): DealRequestService() {
-    private val apiService = service
+    private var apiService = service
     private val courseDao = dao
 
     /**
@@ -100,6 +100,11 @@ class DealCourseService(service: CourseService, dao: CourseDao): DealRequestServ
 
     suspend fun getCourseMap(): Map<String, List<CourseData.CourseElem>>? {
         return courseDao.getCourseData()?.courses
+    }
+
+    fun setService(service: CourseService) {
+        apiService = service
+        Log.i(TAG, "reset courseService")
     }
 
     /**

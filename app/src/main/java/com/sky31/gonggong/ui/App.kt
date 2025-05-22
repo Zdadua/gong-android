@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.sky31.gonggong.ui.screens.classroomScreen.ClassroomScreen
 import com.sky31.gonggong.ui.screens.courseScreen.CourseScreen
 import com.sky31.gonggong.ui.screens.loginScreen.LoginScreen
 import com.sky31.gonggong.ui.screens.mainScreen.MainScreen
@@ -23,7 +25,7 @@ import com.sky31.gonggong.viewmodel.AuthViewModel
 @Composable
 fun App() {
     val navController = rememberNavController()
-    val authViewModel = AuthViewModel()
+    val authViewModel: AuthViewModel = hiltViewModel()
     val themeColor = if(isSystemInDarkTheme()) DarkColor else LightColor
 
     Box(
@@ -46,8 +48,10 @@ fun App() {
                 composable("academicScreen") {
                     AcademicScreen(navController)
                 }
+                composable("classroomScreen") {
+                    ClassroomScreen(navController)
+                }
             }
         }
     }
-
 }

@@ -4,10 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.sky31.gonggong.entity.CalendarData
-import com.sky31.gonggong.entity.ClassroomData
 import com.sky31.gonggong.entity.InfoData
-import com.sky31.gonggong.entity.database.PublicEntity
 import com.sky31.gonggong.entity.database.UserEntity
 
 @Dao
@@ -30,4 +27,7 @@ interface UserDao {
 
     @Query("DELETE FROM user")
     suspend fun deleteUser(): Int
+
+    @Query("DELETE FROM user")
+    suspend fun clearAll()
 }

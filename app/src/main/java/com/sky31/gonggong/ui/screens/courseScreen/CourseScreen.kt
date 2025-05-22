@@ -46,7 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sky31.gonggong.R
 import com.sky31.gonggong.ui.DataState
@@ -67,7 +67,7 @@ import java.time.LocalDate
 @Composable
 fun CourseScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
-    val viewModel: CourseViewModel = viewModel()
+    val viewModel: CourseViewModel = hiltViewModel()
     val curWeekNum by viewModel.curWeekNum
     val calendar by viewModel.calendar
 
@@ -100,6 +100,17 @@ fun CourseScreen(navController: NavController) {
         viewModel.updateData()
         viewModel.getWeekNum()
         pagerState.scrollToPage(curWeekNum.toInt() - 1)
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Spacer(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Orange01)
+        )
     }
 
     Scaffold(
@@ -346,22 +357,6 @@ fun CourseScreen(navController: NavController) {
                     }
                 }
             }
-
-
         }
-    }
-
-    // 解决Status bar的颜色
-    // TODO 暂时未找到更好的方法，解决Status bar的颜色和topBar相同
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-                .background(Orange01)
-        )
     }
 }

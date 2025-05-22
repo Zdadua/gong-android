@@ -7,24 +7,25 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.sky31.gonggong.MainApplication
 import com.sky31.gonggong.entity.CalendarData
 import com.sky31.gonggong.entity.CourseData
-import com.sky31.gonggong.service.CourseService
-import com.sky31.gonggong.service.DealCourseService
+import com.sky31.gonggong.service.AppRepository
 import com.sky31.gonggong.service.DealRequestService
 import com.sky31.gonggong.ui.DataState
 import com.sky31.gonggong.utils.TimeUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
+import javax.inject.Inject
 
+@HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
-class CourseViewModel: ViewModel() {
-    private val dealCourseService by lazy {
-        val courseDao = MainApplication.appDatabase.getCourseDao()
-        val service = MainApplication.retrofit.create(CourseService::class.java)
-        DealCourseService(service, courseDao)
-    }
+class CourseViewModel @Inject constructor(
+    private val repo: AppRepository
+) : ViewModel() {
+    private val dealCourseService get() = repo.getDealCourseService()
+
+
 
     private val _courseMap = mutableMapOf<String, List<CourseData.CourseElem>>()
     private val courseMap: Map<String, List<CourseData.CourseElem>> = _courseMap

@@ -43,7 +43,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sky31.gonggong.ui.theme.LocalThemeColor
 import com.sky31.gonggong.ui.theme.Orange01
@@ -58,7 +58,7 @@ import kotlinx.coroutines.launch
 fun MainScreen(navController: NavController, authViewModel: AuthViewModel) {
 
     val scope = rememberCoroutineScope()
-    val viewModel: MainViewModel = viewModel()
+    val viewModel: MainViewModel = hiltViewModel()
 
     val authState by authViewModel.authState.collectAsState()
     val drawerState = rememberDrawerState(DrawerValue.Closed)

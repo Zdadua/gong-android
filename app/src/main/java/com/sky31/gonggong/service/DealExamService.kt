@@ -5,7 +5,7 @@ import com.sky31.gonggong.dao.ExamDao
 import com.sky31.gonggong.entity.database.ExamEntity
 
 class DealExamService(service: ExamService, dao: ExamDao): DealRequestService() {
-    private val apiService = service
+    private var apiService = service
     private val examDao = dao
 
     suspend fun getExams(): RequestResult {
@@ -16,6 +16,11 @@ class DealExamService(service: ExamService, dao: ExamDao): DealRequestService() 
                 examDao.insertExamList(ExamEntity(exams = data?.data?.exams))
             }
         )
+    }
+
+    fun setService(service: ExamService) {
+        apiService = service
+        Log.i(TAG, "reset examService")
     }
 
     suspend fun getExamsFromDatabase(): ExamEntity? = examDao.getExamList()

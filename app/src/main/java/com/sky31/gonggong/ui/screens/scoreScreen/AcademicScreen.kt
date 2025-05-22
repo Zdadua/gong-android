@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sky31.gonggong.R
 import com.sky31.gonggong.ui.theme.LocalThemeColor
@@ -35,7 +35,7 @@ import com.sky31.gonggong.viewmodel.AcademicViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AcademicScreen(navController: NavController) {
-    val viewModel: AcademicViewModel = viewModel()
+    val viewModel: AcademicViewModel = hiltViewModel()
     val pagerState = rememberPagerState(
         initialPage = 0,
         pageCount = { 2 }

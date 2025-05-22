@@ -8,31 +8,24 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.sky31.gonggong.MainApplication
 import com.sky31.gonggong.entity.CalendarData
 import com.sky31.gonggong.entity.CourseData
 import com.sky31.gonggong.entity.ExamData
-import com.sky31.gonggong.service.CourseService
-import com.sky31.gonggong.service.DealCourseService
-import com.sky31.gonggong.service.DealExamService
+import com.sky31.gonggong.service.AppRepository
 import com.sky31.gonggong.service.DealRequestService
-import com.sky31.gonggong.service.ExamService
 import com.sky31.gonggong.ui.DataState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
+import javax.inject.Inject
 
+@HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
-class MainViewModel : ViewModel() {
-    private val dealCourseService by lazy {
-        val courseDao = MainApplication.appDatabase.getCourseDao()
-        val service = MainApplication.retrofit.create(CourseService::class.java)
-        DealCourseService(service, courseDao)
-    }
-    private val dealExamService by lazy {
-        val examDao = MainApplication.appDatabase.getExamDao()
-        val service = MainApplication.retrofit.create(ExamService::class.java)
-        DealExamService(service, examDao)
-    }
+class MainViewModel @Inject constructor(
+    private val repo: AppRepository
+) : ViewModel() {
+    private val dealCourseService get() = repo.getDealCourseService()
+    private val dealExamService = repo.getDealExamService()
 
     private val _currentTime = mutableStateOf<LocalDateTime>(LocalDateTime.now())
     val currentTime: State<LocalDateTime> = _currentTime

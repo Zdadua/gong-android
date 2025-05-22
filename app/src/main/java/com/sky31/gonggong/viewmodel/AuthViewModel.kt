@@ -1,35 +1,32 @@
 package com.sky31.gonggong.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.sky31.gonggong.MainApplication
-import com.sky31.gonggong.entity.database.UserEntity
-import com.sky31.gonggong.service.DealLoginService
-import com.sky31.gonggong.service.LoginService
+import com.sky31.gonggong.service.AppRepository
 import com.sky31.gonggong.service.ResultWrapper
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.runBlocking
-import okhttp3.OkHttpClient
+import javax.inject.Inject
 
 /**
  * 认证ViewModel
  */
-class AuthViewModel: ViewModel() {
-
-    private val userDao by lazy { MainApplication.appDatabase.getUserDao() }
-    private val dealLoginService by lazy {
-        val service = MainApplication.retrofit.create(LoginService::class.java)
-        DealLoginService(service, userDao)
-    }
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val repo: AppRepository
+) : ViewModel() {
+    private val dealLoginService get() = repo.getDealLoginService()
 
     // 用户登录状态
     private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
     val authState: StateFlow<AuthState> = _authState.asStateFlow()
 
+    // 初始化时，从数据库中获取用户信息，更新认证状态
     init {
         runBlocking {
-            checkAuth()
+            updateAuthStateFromDB()
         }
     }
 
@@ -37,43 +34,23 @@ class AuthViewModel: ViewModel() {
      * 从数据库中获取用户信息，更新认证状态
      */
     private suspend fun updateAuthStateFromDB() {
-        val user = userDao.getUser()
+        val user = dealLoginService.getUser()
         if (user != null) {
-            user.token?.let { _authState.value = AuthState.Authenticated(it) }
+            user.token?.let {
+                _authState.value = AuthState.Authenticated(it)
+                repo.setAuthorization(it)
+            }
         } else {
             _authState.value = AuthState.Unauthenticated
+            repo.clearAuthorization()
         }
     }
 
     /**
-     * 重置认证状态
+     * 重置认证状态，Error -> Unauthenticated
      */
     fun resetAuthState() {
         _authState.value = AuthState.Unauthenticated
-    }
-
-    /**
-     * 检查用户是否已经登录
-     */
-    private suspend fun checkAuth() {
-        val user = userDao.getUser()
-        if (user != null) {
-            user.token?.let { _authState.value = AuthState.Authenticated(it) }
-
-            val client: OkHttpClient = OkHttpClient.Builder()
-                .addInterceptor { chain ->
-                    val originRequest = chain.request()
-                    val newRequest = originRequest.newBuilder()
-                        .header("Authorization", "Bearer " + user.token)
-                        .build()
-
-                    chain.proceed(newRequest)
-                }.build()
-
-            MainApplication.retrofit = MainApplication.retrofit.newBuilder()
-                .client(client)
-                .build()
-        }
     }
 
     /**
@@ -84,9 +61,9 @@ class AuthViewModel: ViewModel() {
     suspend fun login(username: String, password: String) {
         _authState.value = AuthState.Loading
 
+        println(repo)
         when(val result = dealLoginService.login(username, password)) {
             is ResultWrapper.Success -> {
-                result.data?.let { userDao.insertUser(UserEntity(username, it.accessToken, null)) }
                 updateAuthStateFromDB()
             }
 
@@ -106,6 +83,7 @@ class AuthViewModel: ViewModel() {
     suspend fun logout() {
         dealLoginService.logout()
         updateAuthStateFromDB()
+        repo.clearAll()
     }
 
 }

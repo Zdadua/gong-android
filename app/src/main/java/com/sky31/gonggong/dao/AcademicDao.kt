@@ -36,4 +36,7 @@ interface AcademicDao {
 
     @Query("UPDATE academic_data SET minor_score = :score")
     suspend fun updateMinorScore(score: ScoreData): Int
+
+    @Query("DELETE FROM academic_data")
+    suspend fun clearAll()
 }

@@ -25,4 +25,6 @@ interface CourseDao {
     @Query("UPDATE public_data SET calendar = :calendar")
     suspend fun updateCalendar(calendar: CalendarData)
 
+    @Query("DELETE FROM course_data")
+    suspend fun clearAll()
 }

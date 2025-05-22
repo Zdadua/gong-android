@@ -2,21 +2,19 @@ package com.sky31.gonggong.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.sky31.gonggong.MainApplication
 import com.sky31.gonggong.entity.RankData
 import com.sky31.gonggong.entity.ScoreData
-import com.sky31.gonggong.service.AcademicService
-import com.sky31.gonggong.service.DealAcademicService
+import com.sky31.gonggong.service.AppRepository
 import com.sky31.gonggong.service.DealRequestService
 import com.sky31.gonggong.ui.DataState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class AcademicViewModel : ViewModel() {
-    private val dealAcademicService by lazy {
-        val academicService = MainApplication.retrofit.create(AcademicService::class.java)
-        val academicDao = MainApplication.appDatabase.getAcademicDao()
-        DealAcademicService(academicService, academicDao)
-    }
-
+@HiltViewModel
+class AcademicViewModel @Inject constructor(
+    private val repo: AppRepository
+) : ViewModel() {
+    private val dealAcademicService get() = repo.getDealAcademicService()
     private val _majorScore = mutableStateOf<ScoreData?>(null)
     val majorScore = _majorScore
 

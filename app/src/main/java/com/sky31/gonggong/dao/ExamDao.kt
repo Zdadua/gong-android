@@ -13,4 +13,7 @@ interface ExamDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExamList(examEntity: ExamEntity)
+
+    @Query("DELETE FROM exam_data")
+    suspend fun clearAll()
 }
