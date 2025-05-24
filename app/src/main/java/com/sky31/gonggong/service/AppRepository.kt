@@ -44,6 +44,11 @@ class AppRepository @Inject constructor(
         courseDao
     )
 
+    private var dealClassroomService = DealClassroomService(
+        retrofit.create(ClassroomService::class.java),
+        publicDao
+    )
+
     /**
      * 清空Room中的user数据
      */
@@ -80,10 +85,12 @@ class AppRepository @Inject constructor(
         dealExamService.setService(retrofit.create(ExamService::class.java))
         dealAcademicService.setService(retrofit.create(AcademicService::class.java))
         dealCourseService.setService(retrofit.create(CourseService::class.java))
+        dealClassroomService.setService(retrofit.create(ClassroomService::class.java))
     }
 
     fun getDealLoginService(): DealLoginService = dealLoginService
     fun getDealExamService(): DealExamService = dealExamService
     fun getDealAcademicService(): DealAcademicService = dealAcademicService
     fun getDealCourseService(): DealCourseService = dealCourseService
+    fun getDealClassroomService(): DealClassroomService = dealClassroomService
 }
