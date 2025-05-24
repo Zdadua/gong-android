@@ -69,12 +69,11 @@ fun MainScreen(navController: NavController, authViewModel: AuthViewModel) {
             is AuthState.Unauthenticated -> {
                 navController.navigate("login")
             }
+            is AuthState.Authenticated -> {
+                viewModel.updateData()
+            }
             else -> {}
         }
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.updateData()
     }
 
     // 左侧栏
@@ -213,6 +212,13 @@ fun MainScreen(navController: NavController, authViewModel: AuthViewModel) {
                                 .width(30.dp)
                                 .aspectRatio(1f),
                             onClick = { navController.navigate("academicScreen") }
+                        ) { }
+
+                        Button(
+                            modifier = Modifier
+                                .width(30.dp)
+                                .aspectRatio(1f),
+                            onClick = { navController.navigate("classroomScreen") }
                         ) { }
                     }
                 }
