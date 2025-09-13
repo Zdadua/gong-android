@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,8 +26,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sky31.gonggong.entity.ScoreData
-import com.sky31.gonggong.ui.theme.LocalThemeColor
-import com.sky31.gonggong.ui.theme.Orange01
 import com.sky31.gonggong.utils.TimeUtil
 import kotlin.math.floor
 
@@ -46,7 +45,7 @@ fun SingleScorePage(
             .padding(bottom = 15.dp)
             .fillMaxSize()
             .clip(RoundedCornerShape(15.dp))
-            .background(LocalThemeColor.current.boxColorPrimary)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(15.dp)
     ) {
         Column(
@@ -56,7 +55,7 @@ fun SingleScorePage(
         ) {
             Text(
                 text = termStr,
-                color = LocalThemeColor.current.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 25.sp,
                 fontWeight = FontWeight(800),
                 letterSpacing = 3.sp
@@ -92,7 +91,7 @@ fun ScorePageFragment(
     ) {
         Text(
             text = title,
-            color = LocalThemeColor.current.textPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 20.sp,
             fontWeight = FontWeight(800),
             letterSpacing = 5.sp
@@ -103,7 +102,7 @@ fun ScorePageFragment(
                 .padding(top = 5.dp, bottom = 5.dp)
                 .fillMaxWidth()
                 .height(2.dp)
-                .background(LocalThemeColor.current.borderColor)
+                .background(MaterialTheme.colorScheme.surface)
         )
 
         // 名称-分数-学分
@@ -115,7 +114,7 @@ fun ScorePageFragment(
                 modifier = Modifier
                     .weight(3f),
                 text = "名称",
-                color = LocalThemeColor.current.textSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight(700),
                 fontSize = 18.sp
             )
@@ -124,7 +123,7 @@ fun ScorePageFragment(
                 modifier = Modifier
                     .weight(1f),
                 text = "分数",
-                color = LocalThemeColor.current.textSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight(700),
                 fontSize = 18.sp,
                 textAlign = TextAlign.Center
@@ -134,7 +133,7 @@ fun ScorePageFragment(
                 modifier = Modifier
                     .weight(1f),
                 text = "学分",
-                color = LocalThemeColor.current.textSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight(700),
                 fontSize = 18.sp,
                 textAlign = TextAlign.Center
@@ -168,7 +167,7 @@ fun SingleScore(
                 text = scoreElem.name,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = LocalThemeColor.current.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 16.sp
             )
 
@@ -179,7 +178,7 @@ fun SingleScore(
             modifier = Modifier
                 .weight(1f),
             text = scoreElem.score,
-            color = Orange01,
+            color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight(700),
             textAlign = TextAlign.Center,
             fontSize = 16.sp
@@ -189,7 +188,7 @@ fun SingleScore(
             modifier = Modifier
                 .weight(1f),
             text = scoreElem.credit,
-            color = Orange01,
+            color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight(700),
             textAlign = TextAlign.Center,
             fontSize = 16.sp

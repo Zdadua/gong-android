@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,8 +29,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sky31.gonggong.R
-import com.sky31.gonggong.ui.theme.LocalThemeColor
-import com.sky31.gonggong.ui.theme.Orange01
 import com.sky31.gonggong.viewmodel.AcademicViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -48,7 +47,7 @@ fun AcademicScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Orange01)
+            .background(MaterialTheme.colorScheme.primary)
     )
 
     Scaffold(
@@ -59,7 +58,7 @@ fun AcademicScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp)
-                    .background(Orange01)
+                    .background(MaterialTheme.colorScheme.primary)
                     .padding(start = 10.dp, end = 10.dp)
             ) {
                 Row(
@@ -101,7 +100,7 @@ fun AcademicScreen(navController: NavController) {
             state = pagerState,
             modifier = Modifier
                 .fillMaxSize()
-                .background(LocalThemeColor.current.backgroundColor)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) { page ->
             if (page == 0) {

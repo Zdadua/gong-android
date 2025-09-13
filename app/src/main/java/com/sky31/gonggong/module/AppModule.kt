@@ -3,6 +3,7 @@ package com.sky31.gonggong.module
 import android.content.Context
 import androidx.room.Room
 import com.sky31.gonggong.database.AppDatabase
+import com.sky31.gonggong.manager.AppConfigManager
 import com.sky31.gonggong.service.AppRepository
 import dagger.Module
 import dagger.Provides
@@ -20,7 +21,9 @@ object AppModule {
             context,
             AppDatabase::class.java,
             AppDatabase.NAME
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     /**
@@ -30,5 +33,13 @@ object AppModule {
     @Singleton
     fun provideAppRepository(db: AppDatabase): AppRepository {
         return AppRepository(db)
+    }
+
+    @Provides
+    @Singleton
+    fun provideConfigManager(db: AppDatabase): AppConfigManager {
+        val configDao = db.getConfigDao()
+
+        return AppConfigManager(configDao)
     }
 }

@@ -6,7 +6,7 @@ import com.sky31.gonggong.entity.RankData
 import com.sky31.gonggong.entity.ScoreData
 import com.sky31.gonggong.service.AppRepository
 import com.sky31.gonggong.service.DealRequestService
-import com.sky31.gonggong.ui.DataState
+import com.sky31.gonggong.model.state.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

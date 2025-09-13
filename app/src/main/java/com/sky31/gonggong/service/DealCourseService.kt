@@ -59,6 +59,8 @@ class DealCourseService(service: CourseService, dao: CourseDao): DealRequestServ
             storage = { data ->
                 data?.data?.let {
                     if(courseDao.getCalendar() == null) {
+                        if (it.start === "") return@let
+
                         Log.d(TAG, "insert public data")
                         courseDao.insertPublicData(PublicEntity(1, null, null, it))
                     }
@@ -73,7 +75,7 @@ class DealCourseService(service: CourseService, dao: CourseDao): DealRequestServ
     }
 
     /**
-     * 获取今天的课程表
+     * 从数据库获取今天的课程表
      */
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getTodayCourseList(): List<CourseData.CourseElem> {

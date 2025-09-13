@@ -145,12 +145,13 @@ object TimeUtil {
     fun getCourseState(currentTime: LocalDateTime, start: Int, duration: Int): CourseState {
 
         val curr = currentTime.let { currentTime.hour * 60 + currentTime.minute }
+
         val startTime = (if(isSummerTime(currentTime)) summerStartTime[start - 1] else winterStartTime[start - 1]).let { it.hour * 60 + it.minute }
 
         if(startTime > curr)
-            return CourseState.After
-        if(startTime + duration * 45 + 15 * (duration - 1) < curr)
             return CourseState.Before
+        if (startTime + duration * 45 + 15 * (duration - 1) < curr)
+            return CourseState.After
         return CourseState.During
     }
 

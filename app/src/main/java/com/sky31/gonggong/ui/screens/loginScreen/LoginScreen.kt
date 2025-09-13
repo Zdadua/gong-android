@@ -25,10 +25,10 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -46,10 +47,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sky31.gonggong.R
-import com.sky31.gonggong.ui.theme.LocalThemeColor
-import com.sky31.gonggong.ui.theme.Orange01
 import com.sky31.gonggong.viewmodel.AuthState
 import com.sky31.gonggong.viewmodel.AuthViewModel
 import kotlinx.coroutines.delay
@@ -57,10 +57,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
-    authViewModel: AuthViewModel
+    navController: NavController
 ) {
     val scope = rememberCoroutineScope()
+    val authViewModel: AuthViewModel = hiltViewModel()
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -69,16 +69,18 @@ fun LoginScreen(
     var alertText by remember { mutableStateOf("") }
 
     val animatedColor by animateColorAsState(
-        targetValue = if (clickable == LoginButtonState.Clickable) Orange01 else LocalThemeColor.current.boxColorPrimary,
+        targetValue = if (clickable == LoginButtonState.Clickable) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
         animationSpec = tween(200),
         label = "color")
 
-    val authState by authViewModel.authState.collectAsState()
+    val authState by authViewModel.authState
 
     val passwordVisible = remember { mutableStateOf(false) }
     val passwordIconId = remember(passwordVisible.value) {
         if (passwordVisible.value) R.drawable.password_visible else R.drawable.password_invisible
     }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(authState) {
         when(authState) {
@@ -91,7 +93,7 @@ fun LoginScreen(
             is AuthState.Error -> {
                 alertText = (authState as AuthState.Error).message
                 alertVisible = true
-                delay(1500)
+                delay(2500)
                 alertVisible = false
                 authViewModel.resetAuthState()
             }
@@ -131,7 +133,7 @@ fun LoginScreen(
                         modifier = Modifier
                             .height(30.dp)
                             .clip(RoundedCornerShape(15.dp))
-                            .background(Orange01)
+                            .background(MaterialTheme.colorScheme.primary)
                             .padding(top = 6.dp, bottom = 6.dp, start = 25.dp, end = 25.dp),
                         contentAlignment = Alignment.Center
                     ) {
@@ -187,7 +189,7 @@ fun LoginScreen(
                 decorationBox = { innerTextField ->
                     Box {
                         if (username.isEmpty()) {
-                            Text("用户名", color = LocalThemeColor.current.textSecondary)
+                            Text("用户名", color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         innerTextField()
                     }
@@ -233,7 +235,7 @@ fun LoginScreen(
                 decorationBox = { innerTextField ->
                     Box {
                         if (password.isEmpty()) {
-                            Text("密码", color = LocalThemeColor.current.textSecondary)
+                            Text("密码", color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         innerTextField()
                     }
@@ -273,6 +275,7 @@ fun LoginScreen(
             onClick = {
                 if(clickable == LoginButtonState.Clickable) {
                     scope.launch {
+                        keyboardController?.hide()
                         authViewModel.login(username, password)
                     }
                 }

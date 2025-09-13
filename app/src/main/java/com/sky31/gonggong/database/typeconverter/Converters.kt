@@ -7,6 +7,7 @@ import com.sky31.gonggong.entity.CalendarData
 import com.sky31.gonggong.entity.ClassroomData
 import com.sky31.gonggong.entity.CourseData
 import com.sky31.gonggong.entity.ExamData
+import com.sky31.gonggong.entity.GlobalConfig
 import com.sky31.gonggong.entity.InfoData
 import com.sky31.gonggong.entity.RankData
 import com.sky31.gonggong.entity.ScoreData
@@ -81,5 +82,15 @@ class Converters {
     @TypeConverter
     fun toCourseMap(value: String?): Map<String, List<CourseData.CourseElem>>? {
         return Gson().fromJson(value, object : TypeToken<Map<String, List<CourseData.CourseElem>>>() {}.type)
+    }
+
+    @TypeConverter
+    fun fromGlobalConfig(value: GlobalConfig): String {
+        return Gson().toJson(value)
+    }
+
+    @TypeConverter
+    fun toGlobalConfig(value: String): GlobalConfig {
+        return Gson().fromJson(value, GlobalConfig::class.java)
     }
 }

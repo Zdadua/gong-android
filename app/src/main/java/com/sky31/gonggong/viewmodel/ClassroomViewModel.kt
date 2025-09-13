@@ -8,9 +8,9 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.sky31.gonggong.entity.ClassroomData
+import com.sky31.gonggong.model.state.DataState
 import com.sky31.gonggong.service.AppRepository
 import com.sky31.gonggong.service.DealRequestService
-import com.sky31.gonggong.ui.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject
@@ -50,6 +50,10 @@ class ClassroomViewModel @Inject constructor(
                     if (todayResult.code == 200) DataState.Newest else DataState.Expired
 
                 dealClassroomService.getTodayClassroomFromDatabase()?.let {
+                    if (it.date == "") {
+                        return@let
+                    }
+
                     _todayClassroomMap.clear()
                     _todayClassroomMap.putAll(it.classrooms)
 
@@ -69,6 +73,10 @@ class ClassroomViewModel @Inject constructor(
                     if (tomorrowResult.code == 200) DataState.Newest else DataState.Expired
 
                 dealClassroomService.getTomorrowClassroomFromDatabase()?.let {
+                    if (it.date == "") {
+                        return@let
+                    }
+
                     _tomorrowClassroomMap.clear()
                     _tomorrowClassroomMap.putAll(it.classrooms)
 

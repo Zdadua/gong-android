@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.sky31.gonggong.R
-import com.sky31.gonggong.ui.theme.Orange01
 
 @Composable
 fun ClassroomTopBar(navController: NavController) {
@@ -29,7 +29,7 @@ fun ClassroomTopBar(navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .background(Orange01)
+            .background(MaterialTheme.colorScheme.primary)
             .padding(start = 15.dp, end = 15.dp)
     ) {
         // 放置按钮

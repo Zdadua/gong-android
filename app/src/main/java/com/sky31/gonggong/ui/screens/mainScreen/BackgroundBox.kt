@@ -9,6 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -16,7 +17,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.unit.dp
-import com.sky31.gonggong.ui.theme.Orange01
 
 /**
  * 动画背景
@@ -26,6 +26,8 @@ fun BackgroundBox(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
+    val colorScheme = MaterialTheme.colorScheme
+
     // infiniteRepeatable动画
     val transition = rememberInfiniteTransition(label = "cubic_bezier")
     val animatedControlPoint1 = transition.animateFloat(
@@ -75,7 +77,7 @@ fun BackgroundBox(
 
             drawPath(
                 path = path,
-                color = Orange01,
+                color = colorScheme.primary,
                 style = Fill
             )
         }

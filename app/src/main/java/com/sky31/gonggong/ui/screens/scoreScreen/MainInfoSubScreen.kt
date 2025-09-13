@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sky31.gonggong.ui.theme.LocalThemeColor
 import com.sky31.gonggong.viewmodel.AcademicViewModel
 
 @Composable
@@ -30,7 +30,7 @@ fun MainInfoSubScreen(viewModel: AcademicViewModel) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalThemeColor.current.backgroundColor)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -44,7 +44,7 @@ fun MainInfoSubScreen(viewModel: AcademicViewModel) {
                     .padding(top = 15.dp)
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(15.dp))
-                    .background(LocalThemeColor.current.boxColorPrimary)
+                    .background(MaterialTheme.colorScheme.surface)
                     .padding(15.dp)
             ) {
                 Column(
@@ -53,7 +53,7 @@ fun MainInfoSubScreen(viewModel: AcademicViewModel) {
                 ) {
                     Text(
                         text = "英语",
-                        color = LocalThemeColor.current.textPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 20.sp,
                         fontWeight = FontWeight(800),
                         letterSpacing = 5.sp
@@ -64,7 +64,7 @@ fun MainInfoSubScreen(viewModel: AcademicViewModel) {
                             .padding(top = 5.dp, bottom = 5.dp)
                             .fillMaxWidth()
                             .height(2.dp)
-                            .background(LocalThemeColor.current.borderColor)
+                            .background(MaterialTheme.colorScheme.surface)
                     )
 
                     Row(modifier = Modifier.fillMaxWidth()) {
@@ -95,7 +95,7 @@ fun MainInfoSubScreen(viewModel: AcademicViewModel) {
                     .padding(top = 15.dp)
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(15.dp))
-                    .background(LocalThemeColor.current.boxColorPrimary)
+                    .background(MaterialTheme.colorScheme.surface)
                     .padding(15.dp)
             ) {
                 Column(
@@ -104,7 +104,7 @@ fun MainInfoSubScreen(viewModel: AcademicViewModel) {
                 ) {
                     Text(
                         text = "排名",
-                        color = LocalThemeColor.current.textPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 20.sp,
                         fontWeight = FontWeight(800),
                         letterSpacing = 5.sp
@@ -115,7 +115,7 @@ fun MainInfoSubScreen(viewModel: AcademicViewModel) {
                             .padding(top = 5.dp, bottom = 5.dp)
                             .fillMaxWidth()
                             .height(2.dp)
-                            .background(LocalThemeColor.current.borderColor)
+                            .background(MaterialTheme.colorScheme.surface)
                     )
 
                     AcademicSingleInfoBox(

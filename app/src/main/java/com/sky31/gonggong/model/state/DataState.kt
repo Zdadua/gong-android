@@ -1,9 +1,9 @@
-package com.sky31.gonggong.ui
+package com.sky31.gonggong.model.state
 
 /**
  * 数据状态类
  */
-sealed class DataState() {
+sealed class DataState {
     data object Uninitialized : DataState()
     data object Loading : DataState()
     data object Newest : DataState()

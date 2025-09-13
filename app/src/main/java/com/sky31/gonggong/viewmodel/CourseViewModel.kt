@@ -9,9 +9,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.sky31.gonggong.entity.CalendarData
 import com.sky31.gonggong.entity.CourseData
+import com.sky31.gonggong.model.state.DataState
 import com.sky31.gonggong.service.AppRepository
 import com.sky31.gonggong.service.DealRequestService
-import com.sky31.gonggong.ui.DataState
 import com.sky31.gonggong.utils.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate

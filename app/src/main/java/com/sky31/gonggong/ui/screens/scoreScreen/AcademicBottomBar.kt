@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,8 +33,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.sky31.gonggong.ui.theme.LocalThemeColor
-import com.sky31.gonggong.ui.theme.Orange01
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
@@ -59,7 +58,7 @@ fun AcademicBottomBar(pagerState: PagerState) {
         contentPadding = PaddingValues(0.dp)
     ) {
         Column {
-            Row() {
+            Row {
                 Text(
                     modifier = Modifier
                         .weight(1f)
@@ -68,7 +67,7 @@ fun AcademicBottomBar(pagerState: PagerState) {
                         },
                     text = "学业总览",
                     textAlign = TextAlign.Center,
-                    color = LocalThemeColor.current.textSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
                     modifier = Modifier
@@ -78,7 +77,7 @@ fun AcademicBottomBar(pagerState: PagerState) {
                         },
                     text = "成绩表单",
                     textAlign = TextAlign.Center,
-                    color = LocalThemeColor.current.textSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -97,7 +96,7 @@ fun AcademicBottomBar(pagerState: PagerState) {
                     .width(100.dp)
                     .height(10.dp)
                     .clip(RoundedCornerShape(5.dp))
-                    .background(Orange01)
+                    .background(MaterialTheme.colorScheme.primary)
             )
         }
     }

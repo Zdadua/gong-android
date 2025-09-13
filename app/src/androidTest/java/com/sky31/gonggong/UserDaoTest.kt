@@ -5,8 +5,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sky31.gonggong.dao.UserDao
 import com.sky31.gonggong.database.AppDatabase
-import com.sky31.gonggong.entity.CalendarData
-import com.sky31.gonggong.entity.ClassroomData
 import com.sky31.gonggong.entity.InfoData
 import com.sky31.gonggong.entity.database.UserEntity
 import kotlinx.coroutines.runBlocking
@@ -70,17 +68,5 @@ class UserDaoTest {
         val retrieved = userDao.getUserByUid("test02")
 
         assert(retrieved?.uid == "test02")
-    }
-
-    @Test
-    fun testInsertPublicData() = runTest {
-        val today = ClassroomData(
-            "2000-01-01",
-            mapOf("逸夫楼" to listOf(ClassroomData.ClassroomInfo("程序设计", listOf("空","空","空","空","空"))))
-        )
-
-        userDao.insertPublicData(today, today, CalendarData("2000-02-02", 24, "1"))
-        val retrieved = userDao.getPublicData()
-        assert(retrieved?.calendar?.weeks == 24)
     }
 }

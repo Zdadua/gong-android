@@ -1,4 +1,4 @@
-package com.sky31.gonggong.ui.screens.mainScreen
+package com.sky31.gonggong.ui.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutLinearInEasing
@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,8 +18,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sky31.gonggong.ui.theme.LocalThemeColor
-import com.sky31.gonggong.ui.theme.Orange01
 
 /**
  * 圆形进度条
@@ -28,12 +27,12 @@ import com.sky31.gonggong.ui.theme.Orange01
  */
 @Composable
 fun CircleProgressBar(target: Float, courseCount: Int) {
-    val progress = remember { Animatable(0f) }
-    val localThemeColor = LocalThemeColor.current
+    val progression = remember { Animatable(0f) }
+    val colorScheme = MaterialTheme.colorScheme
 
     LaunchedEffect(target) {
         if (target != -1f) {
-            progress.animateTo(
+            progression.animateTo(
                 targetValue = target * 360f,
                 animationSpec = tween(
                     durationMillis = 1000,
@@ -52,22 +51,22 @@ fun CircleProgressBar(target: Float, courseCount: Int) {
             text = courseCount.toString(),
             fontWeight = FontWeight(700),
             fontSize = 24.sp,
-            color = LocalThemeColor.current.textPrimary
+            color = MaterialTheme.colorScheme.onPrimary
         )
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
         ) {
             drawArc(
-                color = Orange01,
+                color = colorScheme.primary,
                 startAngle = -90f,
-                sweepAngle = progress.value,
+                sweepAngle = progression.value,
                 useCenter = false,
                 style = Stroke(width = 10.dp.toPx(), cap = StrokeCap.Round)
             )
 
             drawArc(
-                color = localThemeColor.boxColorPrimary,
+                color = colorScheme.surface,
                 startAngle = -90f,
                 sweepAngle = 360f,
                 useCenter = false,

@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,8 +25,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sky31.gonggong.entity.ClassroomData
-import com.sky31.gonggong.ui.theme.LocalThemeColor
-import com.sky31.gonggong.ui.theme.Orange01
 
 /**
  * 空教室列表子组件
@@ -68,7 +67,7 @@ fun ClassroomSubScreen(
                     modifier = Modifier
                         .weight(1f),
                     text = classroomInfo.name,
-                    color = LocalThemeColor.current.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 16.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -88,7 +87,7 @@ fun ClassroomSubScreen(
                             .padding(start = 12.dp, end = 12.dp)
                             .fillMaxSize()
                             .clip(RoundedCornerShape(20.dp))
-                            .background(LocalThemeColor.current.boxColorSecondary)
+                            .background(MaterialTheme.colorScheme.onSurfaceVariant)
                     )
 
                     Row(
@@ -98,7 +97,7 @@ fun ClassroomSubScreen(
                     ) {
                         classroomInfo.status.forEach { status ->
                             val color =
-                                if (status == "空") Orange01 else LocalThemeColor.current.boxColorSecondary
+                                if (status == "空") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                             Spacer(
                                 modifier = Modifier
                                     .padding(start = 12.dp, end = 12.dp)

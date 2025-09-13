@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,8 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sky31.gonggong.entity.ScoreData
-import com.sky31.gonggong.ui.theme.LocalThemeColor
-import com.sky31.gonggong.ui.theme.Orange01
 
 @Composable
 fun AcademicMainInfoBox(
@@ -36,7 +35,7 @@ fun AcademicMainInfoBox(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
-            .background(LocalThemeColor.current.boxColorPrimary)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(15.dp)
     ) {
         Column(
@@ -45,7 +44,7 @@ fun AcademicMainInfoBox(
         ) {
             Text(
                 text = "总览",
-                color = LocalThemeColor.current.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 24.sp,
                 fontWeight = FontWeight(800),
                 letterSpacing = 5.sp
@@ -56,7 +55,7 @@ fun AcademicMainInfoBox(
                     .padding(top = 5.dp, bottom = 5.dp)
                     .fillMaxWidth()
                     .height(2.dp)
-                    .background(LocalThemeColor.current.borderColor)
+                    .background(MaterialTheme.colorScheme.surface)
             )
 
             AcademicSingleInfoBox(
@@ -99,7 +98,7 @@ fun AcademicSingleInfoBox(
             .fillMaxWidth()
             .padding(3.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(LocalThemeColor.current.backgroundColor)
+            .background(MaterialTheme.colorScheme.background)
             .padding(top = 5.dp, bottom = 5.dp, start = 5.dp, end = 15.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -109,12 +108,12 @@ fun AcademicSingleInfoBox(
                 .width(5.dp)
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(5.dp))
-                .background(Orange01)
+                .background(MaterialTheme.colorScheme.primary)
         )
 
         Text(
             text = name,
-            color = LocalThemeColor.current.textPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 16.sp
         )
 
@@ -122,7 +121,7 @@ fun AcademicSingleInfoBox(
 
         Text(
             text = value ?: "-",
-            color = Orange01,
+            color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight(700),
             fontSize = 16.sp
         )
@@ -156,7 +155,7 @@ fun AcademicSingleInfoBoxWithProgress(
             .fillMaxWidth()
             .padding(3.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(LocalThemeColor.current.backgroundColor)
+            .background(MaterialTheme.colorScheme.background)
             .padding(top = 5.dp, bottom = 10.dp, start = 5.dp, end = 15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -173,12 +172,12 @@ fun AcademicSingleInfoBoxWithProgress(
                     .width(5.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(5.dp))
-                    .background(Orange01)
+                    .background(MaterialTheme.colorScheme.primary)
             )
 
             Text(
                 text = name,
-                color = LocalThemeColor.current.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 14.sp
             )
 
@@ -186,7 +185,7 @@ fun AcademicSingleInfoBoxWithProgress(
 
             Text(
                 text = values?.let { "${values[1]}/${values[0]}" } ?: "-/-",
-                color = Orange01,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight(700),
                 fontSize = 16.sp
             )
@@ -199,14 +198,14 @@ fun AcademicSingleInfoBoxWithProgress(
                 .height(5.dp)
                 .padding(start = 15.dp, end = 15.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(LocalThemeColor.current.boxColorPrimary)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             Box(
                 modifier = Modifier
                     .height(10.dp)
                     .fillMaxWidth(progress.value)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Orange01)
+                    .background(MaterialTheme.colorScheme.primary)
             )
         }
     }

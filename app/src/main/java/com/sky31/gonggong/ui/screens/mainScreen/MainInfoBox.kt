@@ -2,6 +2,7 @@ package com.sky31.gonggong.ui.screens.mainScreen
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,10 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sky31.gonggong.ui.theme.LocalThemeColor
 import com.sky31.gonggong.utils.TimeUtil
 import com.sky31.gonggong.viewmodel.MainViewModel
 
@@ -36,7 +39,6 @@ import com.sky31.gonggong.viewmodel.MainViewModel
 @Composable
 fun MainInfoBox(viewModel: MainViewModel) {
     val currentTime by viewModel.currentTime
-    val progress by viewModel.progress
 
     var weekNum by remember { mutableLongStateOf(0) }
 
@@ -44,10 +46,13 @@ fun MainInfoBox(viewModel: MainViewModel) {
         viewModel.getWeek()?.let { weekNum = it }
     }
 
-    BackgroundBox(
+
+    Box(
         modifier = Modifier
-            .fillMaxWidth(.84f)
             .fillMaxHeight()
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .background(MaterialTheme.colorScheme.primary)
     ) {
         Box(
             modifier = Modifier
@@ -59,14 +64,6 @@ fun MainInfoBox(viewModel: MainViewModel) {
                     .height(50.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .height(45.dp)
-                        .width(45.dp)
-                ) {
-                    CircleProgressBar(progress, viewModel.courseList.size)
-                }
-
                 Column(
                     modifier = Modifier
                         .padding(start = 15.dp)
@@ -82,7 +79,7 @@ fun MainInfoBox(viewModel: MainViewModel) {
                             text = "${TimeUtil.weekdayNameMapCN[currentTime.dayOfWeek.value]}",
                             fontSize = 22.sp,
                             fontWeight = FontWeight(800),
-                            color = LocalThemeColor.current.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
 
                         Spacer(
@@ -94,7 +91,7 @@ fun MainInfoBox(viewModel: MainViewModel) {
                         Text(
                             text = "第",
                             fontSize = 14.sp,
-                            color = LocalThemeColor.current.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
 
                         Text(
@@ -103,13 +100,13 @@ fun MainInfoBox(viewModel: MainViewModel) {
                             text = "$weekNum",
                             fontWeight = FontWeight(800),
                             fontSize = 25.sp,
-                            color = LocalThemeColor.current.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
 
                         Text(
                             text = "周",
                             fontSize = 14.sp,
-                            color = LocalThemeColor.current.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
 
@@ -117,7 +114,7 @@ fun MainInfoBox(viewModel: MainViewModel) {
                         text = "${currentTime.year}.${
                             currentTime.monthValue.toString().padStart(2, '0')
                         }.${currentTime.dayOfMonth.toString().padStart(2, '0')}",
-                        color = LocalThemeColor.current.textPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }

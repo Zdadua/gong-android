@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +27,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sky31.gonggong.entity.CourseData
-import com.sky31.gonggong.ui.theme.LocalThemeColor
 import com.sky31.gonggong.utils.TimeUtil
 import java.time.LocalDateTime
 
@@ -54,7 +54,7 @@ fun CourseBox(course: CourseData.CourseElem, currentTime: LocalDateTime) {
             .height(80.dp)
             .padding(top = 5.dp, bottom = 5.dp)
             .clip(RoundedCornerShape(15.dp))
-            .background(LocalThemeColor.current.boxColorPrimary)
+            .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(start = 15.dp, end = 15.dp, top = 10.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -70,13 +70,13 @@ fun CourseBox(course: CourseData.CourseElem, currentTime: LocalDateTime) {
                 text = TimeUtil.customTimeToString(courseTime.value[0]),
                 fontWeight = FontWeight(600),
                 fontSize = 16.sp,
-                color = LocalThemeColor.current.textPrimary
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = TimeUtil.customTimeToString(courseTime.value[1]),
                 fontWeight = FontWeight(600),
                 fontSize = 16.sp,
-                color = LocalThemeColor.current.textPrimary
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
 
@@ -99,7 +99,7 @@ fun CourseBox(course: CourseData.CourseElem, currentTime: LocalDateTime) {
                 text = course.name,
                 fontWeight = FontWeight(600),
                 fontSize = 15.sp,
-                color = LocalThemeColor.current.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 letterSpacing = 1.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -108,7 +108,7 @@ fun CourseBox(course: CourseData.CourseElem, currentTime: LocalDateTime) {
                 text = course.classroom,
                 fontWeight = FontWeight(500),
                 fontSize = 14.sp,
-                color = LocalThemeColor.current.textSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 letterSpacing = 1.sp
             )
         }

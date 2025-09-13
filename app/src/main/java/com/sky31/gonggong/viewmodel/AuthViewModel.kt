@@ -1,12 +1,11 @@
 package com.sky31.gonggong.viewmodel
 
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.sky31.gonggong.service.AppRepository
 import com.sky31.gonggong.service.ResultWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -20,8 +19,8 @@ class AuthViewModel @Inject constructor(
     private val dealLoginService get() = repo.getDealLoginService()
 
     // 用户登录状态
-    private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
-    val authState: StateFlow<AuthState> = _authState.asStateFlow()
+    private val _authState = mutableStateOf<AuthState>(AuthState.Unauthenticated)
+    val authState = _authState
 
     // 初始化时，从数据库中获取用户信息，更新认证状态
     init {
@@ -35,6 +34,8 @@ class AuthViewModel @Inject constructor(
      */
     private suspend fun updateAuthStateFromDB() {
         val user = dealLoginService.getUser()
+
+        Log.i("AuthViewModel", user.toString())
         if (user != null) {
             user.token?.let {
                 _authState.value = AuthState.Authenticated(it)
@@ -61,7 +62,6 @@ class AuthViewModel @Inject constructor(
     suspend fun login(username: String, password: String) {
         _authState.value = AuthState.Loading
 
-        println(repo)
         when(val result = dealLoginService.login(username, password)) {
             is ResultWrapper.Success -> {
                 updateAuthStateFromDB()
@@ -72,6 +72,7 @@ class AuthViewModel @Inject constructor(
             }
 
             is ResultWrapper.NetworkError -> {
+                Log.i("login", "NetworkError: ${result.message}")
                 _authState.value = AuthState.Error(result.toString())
             }
         }

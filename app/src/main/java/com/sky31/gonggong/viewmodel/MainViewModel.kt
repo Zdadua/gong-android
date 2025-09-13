@@ -5,15 +5,15 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.sky31.gonggong.entity.CalendarData
 import com.sky31.gonggong.entity.CourseData
 import com.sky31.gonggong.entity.ExamData
+import com.sky31.gonggong.model.state.DataState
 import com.sky31.gonggong.service.AppRepository
 import com.sky31.gonggong.service.DealRequestService
-import com.sky31.gonggong.ui.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -30,75 +30,86 @@ class MainViewModel @Inject constructor(
     private val _currentTime = mutableStateOf<LocalDateTime>(LocalDateTime.now())
     val currentTime: State<LocalDateTime> = _currentTime
 
-    private val _isRefreshing = mutableStateOf(false)
-    val isRefreshing: State<Boolean> = _isRefreshing
+    private var _courseList = mutableStateOf<List<CourseData.CourseElem>>(emptyList())
+    val courseList: State<List<CourseData.CourseElem>> = _courseList
 
-    private val _courseList = mutableStateListOf<CourseData.CourseElem>()
-    val courseList: List<CourseData.CourseElem> = _courseList
+    private val _completedCourseNum = mutableIntStateOf(0)
+    val completedCourseNum: State<Int> = _completedCourseNum
 
-    private val _examList = mutableStateListOf<ExamData.ExamElem>()
-    val examList: List<ExamData.ExamElem> = _examList
+    private val _examList = mutableStateOf<List<ExamData.ExamElem>>(emptyList())
+    val examList: State<List<ExamData.ExamElem>> = _examList
 
     private val _calendar = mutableStateOf<CalendarData?>(null)
     val calendar: State<CalendarData?> = _calendar
 
-    private val _progress = mutableFloatStateOf(-1f)
-    val progress: State<Float> = _progress
-
-    private val _courseListState = mutableStateOf<DataState>(DataState.Uninitialized)
-    val courseListState = _courseListState
-
-    private val _examListState = mutableStateOf<DataState>(DataState.Uninitialized)
-    val examListState = _examListState
+    private val _progression = mutableFloatStateOf(-1f)
+    val progression: State<Float> = _progression
 
     fun refreshCurrentTime() {
-        _isRefreshing.value = true
         _currentTime.value = LocalDateTime.now()
-        _isRefreshing.value = false
     }
 
     /**
-     * 更新mainScreen所需数据
+     * 更新今日课程表
+     *
+     * @param init 初始化函数
+     * @param finished 数据获取结束函数
      */
-    suspend fun updateData() {
-        _courseListState.value = DataState.Loading
-        _examListState.value = DataState.Loading
+    suspend fun updateCourseList(
+        init: () -> Unit,
+        finished: (state: DataState) -> Unit
+    ) {
+        init()
 
         when (val courseResult = dealCourseService.getCourses()) {
             is DealRequestService.RequestResult.Success -> {
-                _courseListState.value =
-                    if (courseResult.code == 200) DataState.Newest else DataState.Expired
+                val state = if (courseResult.code == 200) DataState.Newest else DataState.Expired
+                finished(state)
 
-                dealCourseService.getTodayCourseList().let {
-                    _courseList.clear()
-                    _courseList.addAll(it)
-                }
+                _courseList.value = dealCourseService.getTodayCourseList()
             }
 
             is DealRequestService.RequestResult.Error -> {
-                _courseListState.value = DataState.Error
+                finished(DataState.Error)
                 Log.e(dealCourseService.TAG, "get courses error")
             }
         }
+    }
+
+    /**
+     * 更新考试安排
+     *
+     * @param init 初始化函数
+     * @param finished 数据获取结束函数
+     */
+    suspend fun updateExamList(
+        init: () -> Unit,
+        finished: (state: DataState) -> Unit
+    ) {
+        init()
 
         when (val examResult = dealExamService.getExams()) {
             is DealRequestService.RequestResult.Success -> {
-                _examListState.value =
-                    if (examResult.code == 200) DataState.Newest else DataState.Expired
+                val state = if (examResult.code == 200) DataState.Newest else DataState.Expired
+                finished(state)
 
                 dealExamService.getExamsFromDatabase()?.exams?.let {
-                    _examList.clear()
-                    _examList.addAll(it)
+                    _examList.value = it
                 }
             }
 
             is DealRequestService.RequestResult.Error -> {
-                _examListState.value = DataState.Error
+                finished(DataState.Error)
                 Log.e(dealExamService.TAG, "get exams error")
             }
         }
+    }
 
-        if (calendar.value == null) {
+    /**
+     * 更新校历
+     */
+    suspend fun updateCalendar() {
+        if (_calendar.value == null) {
             val calendarStorage = dealCourseService.getCalendarFromDatabase()
             if (calendarStorage == null) {
                 when (dealCourseService.getCalendar()) {
@@ -118,8 +129,12 @@ class MainViewModel @Inject constructor(
         _currentTime.value = LocalDateTime.now()
     }
 
-    fun setProgress(progress: Float) {
-        _progress.floatValue = progress
+    fun setProgression(progression: Float) {
+        _progression.floatValue = progression
+    }
+
+    fun setCompletedNum(num: Int) {
+        _completedCourseNum.intValue = num
     }
 
     suspend fun getWeek(): Long? {

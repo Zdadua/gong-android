@@ -7,6 +7,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("xd") {
+            storeFile = file("C:\\Users\\Administrator\\xd.keystore")
+            storePassword = "202105650301zyh"
+            keyAlias = "xd"
+            keyPassword = "202105650301zyh"
+        }
+    }
     namespace = "com.sky31.gonggong"
     compileSdk = 35
 
@@ -25,7 +33,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

@@ -1,8 +1,9 @@
 package com.sky31.gonggong.service
 
+import android.util.Log
 import retrofit2.Response
 
-open class DealRequestService() {
+open class DealRequestService {
     val TAG = "RequestService"
 
     sealed class RequestResult {
@@ -17,6 +18,7 @@ open class DealRequestService() {
 
         when(result) {
             is ResultWrapper.Success -> {
+                Log.i("DealRequestService", "${result.data}")
                 storage(result.data)
                 return RequestResult.Success(message = "请求成功", code = result.code)
             }

@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,9 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sky31.gonggong.R
-import com.sky31.gonggong.ui.DataState
-import com.sky31.gonggong.ui.theme.LocalThemeColor
-import com.sky31.gonggong.ui.theme.Orange01
+import com.sky31.gonggong.model.state.DataState
 import com.sky31.gonggong.utils.TimeUtil
 import com.sky31.gonggong.viewmodel.CourseViewModel
 import kotlinx.coroutines.launch
@@ -70,6 +69,8 @@ fun CourseScreen(navController: NavController) {
     val viewModel: CourseViewModel = hiltViewModel()
     val curWeekNum by viewModel.curWeekNum
     val calendar by viewModel.calendar
+
+    val colorScheme = MaterialTheme.colorScheme
 
     // 课程表数据状态
     val tableState by viewModel.courseTableState
@@ -109,7 +110,7 @@ fun CourseScreen(navController: NavController) {
         Spacer(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Orange01)
+                .background(MaterialTheme.colorScheme.primary)
         )
     }
 
@@ -122,7 +123,7 @@ fun CourseScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
-                    .background(Orange01)
+                    .background(MaterialTheme.colorScheme.primary)
                     .padding(start = 15.dp, end = 15.dp)
             ) {
                 Box(
@@ -180,10 +181,10 @@ fun CourseScreen(navController: NavController) {
                         drawRect(
                             brush = Brush.horizontalGradient(
                                 colorStops = arrayOf(
-                                    0.0f to Orange01,
+                                    0.0f to colorScheme.primary,
                                     0.15f to Color.Transparent,
                                     0.70f to Color.Transparent,
-                                    0.85f to Orange01,
+                                    0.85f to colorScheme.primary,
                                 )
                             ),
                             size = size
@@ -249,7 +250,7 @@ fun CourseScreen(navController: NavController) {
                 Row(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(LocalThemeColor.current.backgroundColor),
+                        .background(MaterialTheme.colorScheme.background),
                 ) {
                     // 左侧时间表
                     Column(
@@ -267,12 +268,12 @@ fun CourseScreen(navController: NavController) {
                             modifier = Modifier
                                 .height(40.dp)
                                 .fillMaxWidth()
-                                .background(LocalThemeColor.current.boxColorPrimary),
+                                .background(MaterialTheme.colorScheme.surface),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = "${weekStart.monthValue}",
-                                color = LocalThemeColor.current.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
 
@@ -286,17 +287,17 @@ fun CourseScreen(navController: NavController) {
                                     .weight(1f)
                                     .fillMaxWidth()
                                     .padding(top = 1.dp, bottom = 1.dp)
-                                    .background(LocalThemeColor.current.boxColorPrimary),
+                                    .background(MaterialTheme.colorScheme.surface),
                                 verticalArrangement = Arrangement.Center,
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
                                     text = TimeUtil.customTimeToString(start),
-                                    color = LocalThemeColor.current.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = TimeUtil.customTimeToString(end),
-                                    color = LocalThemeColor.current.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                             }
 
@@ -306,7 +307,7 @@ fun CourseScreen(navController: NavController) {
                                     modifier = Modifier
                                         .height(5.dp)
                                         .fillMaxWidth()
-                                        .background(Orange01)
+                                        .background(MaterialTheme.colorScheme.primary)
                                 )
                             }
                         }
@@ -326,7 +327,7 @@ fun CourseScreen(navController: NavController) {
                                     .height(40.dp)
                                     .fillMaxWidth()
                                     .padding(start = 1.dp, end = 1.dp)
-                                    .background(LocalThemeColor.current.boxColorPrimary),
+                                    .background(MaterialTheme.colorScheme.surface),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
@@ -339,7 +340,7 @@ fun CourseScreen(navController: NavController) {
                                             item
                                         )
                                     ),
-                                    color = LocalThemeColor.current.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
 
                                 Text(
@@ -350,7 +351,7 @@ fun CourseScreen(navController: NavController) {
                                         )
                                     }",
                                     fontSize = 12.sp,
-                                    color = LocalThemeColor.current.textSecondary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }

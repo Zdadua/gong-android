@@ -1,44 +1,27 @@
 package com.sky31.gonggong.ui.theme
 
-import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
-/**
- * 主题色
- */
-val Orange01 = Color(0xFFF8931D)
+val lightColorScheme = lightColorScheme(
+    primary = Color(0xFFF8931D),
+    onPrimary = Color.Black,
+    background = Color(0xFFF1F1F1),
+    onBackground = Color.Black,
+    surface = Color(0xFFE3E3E3),
+    onSurface = Color.Black,
+    onSurfaceVariant = Color(0xFF515151),
+    primaryContainer = Color(0xFFFFFFFF),
+)
 
-/**
- * 系统主题色
- */
-interface ThemeColor {
-    val backgroundColor: Color
-    val textPrimary: Color
-    val textSecondary: Color
-    val boxColorPrimary: Color
-    val boxColorSecondary: Color
-    val drawerColor: Color
-    val borderColor: Color
-}
-
-object DarkColor: ThemeColor {
-    override val backgroundColor: Color = Color(0xFF1C1C1C)
-    override val textPrimary: Color = Color.White
-    override val textSecondary: Color = Color(0xFFB9B9B9)
-    override val boxColorPrimary: Color = Color(0xFF313131)
-    override val boxColorSecondary: Color = Color(0xFF000000)
-    override val drawerColor: Color = Color(0xFF494949)
-    override val borderColor: Color = Color(0xFF696969)
-}
-
-object LightColor: ThemeColor {
-    override val backgroundColor: Color = Color(0xFFECECEC)
-    override val textPrimary: Color = Color.Black
-    override val textSecondary: Color = Color(0xFF515151)
-    override val boxColorPrimary: Color = Color(0xFFFFFFFF)
-    override val boxColorSecondary: Color = Color(0xFFEAEAEA)
-    override val drawerColor: Color = Color(0xFFE5F3E3)
-    override val borderColor: Color = Color(0xFF707070)
-}
-
-val LocalThemeColor = compositionLocalOf<ThemeColor> { DarkColor }
+val darkColorScheme = darkColorScheme(
+    primary = Color(0xFFF8931D),
+    onPrimary = Color.White,
+    background = Color(0xFF1C1C1C),
+    onBackground = Color.White,
+    surface = Color(0xFF313131),
+    onSurface = Color.White,
+    onSurfaceVariant = Color(0xFFB9B9B9),
+    primaryContainer = Color(0xFF000000),
+)
